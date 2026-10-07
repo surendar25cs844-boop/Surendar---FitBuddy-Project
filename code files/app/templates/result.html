@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Your plan · FitBuddy{% endblock %}
+{% block content %}
+<section class="result-wrap">
+  <a class="back-link" href="/">← Create another plan</a>
+
+  <div class="result-intro">
+    <span class="step">MADE FOR {{ user.name|upper }}</span>
+    <h1>Your week,<br><em>with a little more intention.</em></h1>
+    <p class="lede">
+      {{ user.goal.replace('_', ' ')|title }}
+      · {{ user.intensity|title }} intensity
+      · {{ user.age }} years old
+    </p>
+  </div>
+
+  {% if notice %}
+    <div class="success" role="status">{{ notice }}</div>
+  {% endif %}
+
+  <div class="ai-note">{{ ai_mode }}</div>
+
+  <article class="content-card">
+    <div class="card-heading">
+      <span class="step">YOUR ROUTINE</span>
+      <h2>7-day workout plan</h2>
+    </div>
+    <pre class="plan-text">{{ plan.current_plan }}</pre>
+  </article>
+
+  <article class="tip-card">
+    <span class="step">A NOTE TO NOURISH YOUR GOAL</span>
+    <h2>Small habits add up.</h2>
+    <p>{{ plan.nutrition_tip }}</p>
+  </article>
+
+  {% if plan.latest_feedback %}
+    <p class="feedback-note">
+      <strong>Latest adjustment:</strong> {{ plan.latest_feedback }}
+    </p>
+  {% endif %}
+
+  <article class="content-card feedback-card">
+    <h2>Want to adjust anything?</h2>
+    <p>Tell FitBuddy what to change and your plan will be revised.</p>
+
+    <form action="/submit-feedback" method="post">
+      <input type="hidden" name="user_key" value="{{ user.user_key }}">
+      <label for="feedback">Your feedback</label>
+      <textarea
+        id="feedback"
+        name="feedback"
+        required
+        minlength="3"
+        maxlength="1000"
+        rows="3"
+        placeholder="For example: add more cardio or make sessions shorter"
+      ></textarea>
+      <button class="button" type="submit">Update my plan</button>
+    </form>
+  </article>
+
+  <p class="safety-note">
+    Move within your comfort level. Stop if you feel pain or dizziness.
+    Consult a qualified professional if you have health concerns.
+  </p>
+</section>
+{% endblock %}

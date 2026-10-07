@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Create your plan · FitBuddy{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="eyebrow"><span></span> YOUR PERSONAL FITNESS COMPANION</div>
+
+  <h1>Build a routine<br>that <em>fits your life.</em></h1>
+  <p class="lede">
+    A thoughtful 7-day workout plan, shaped around your goals and preferred pace.
+  </p>
+
+  <div class="form-card">
+    <div class="card-heading">
+      <div>
+        <span class="step">01 / YOUR PROFILE</span>
+        <h2>Let’s get to know you</h2>
+      </div>
+      <span class="spark">✳</span>
+    </div>
+
+    {% if error %}
+      <div class="alert" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form action="/generate-workout" method="post" class="profile-form">
+      <label>
+        Your name
+        <input name="name" required maxlength="100" placeholder="e.g. Alex Morgan">
+      </label>
+
+      <label>
+        Your user ID
+        <input
+          name="user_key"
+          required
+          minlength="2"
+          maxlength="80"
+          placeholder="Choose an ID to find your plan later"
+        >
+        <small>Use the same ID when you come back to update your plan.</small>
+      </label>
+
+      <div class="field-row">
+        <label>
+          Age
+          <input name="age" type="number" min="16" max="100" required placeholder="28">
+        </label>
+
+        <label>
+          Weight <span class="unit">kg</span>
+          <input
+            name="weight_kg"
+            type="number"
+            min="25"
+            max="350"
+            step="0.1"
+            required
+            placeholder="68"
+          >
+        </label>
+      </div>
+
+      <label>
+        What are you working toward?
+        <select name="goal" required>
+          <option value="" disabled selected>Choose a goal</option>
+          <option value="weight_loss">Weight loss</option>
+          <option value="muscle_gain">Muscle gain</option>
+          <option value="general_wellness">General wellness</option>
+          <option value="flexibility">Flexibility and mobility</option>
+        </select>
+      </label>
+
+      <fieldset>
+        <legend>Preferred intensity</legend>
+        <div class="choice-row">
+          <label class="choice">
+            <input type="radio" name="intensity" value="low" required>
+            <span>Low<small>Gentle start</small></span>
+          </label>
+
+          <label class="choice">
+            <input type="radio" name="intensity" value="medium">
+            <span>Medium<small>Steady effort</small></span>
+          </label>
+
+          <label class="choice">
+            <input type="radio" name="intensity" value="high">
+            <span>High<small>More challenge</small></span>
+          </label>
+        </div>
+      </fieldset>
+
+      <button class="button" type="submit">
+        Generate my plan <span>↗</span>
+      </button>
+    </form>
+
+    <p class="privacy-note">
+      Your details and plan are saved in the local FitBuddy database.
+      This tool offers general wellness guidance, not medical advice.
+    </p>
+  </div>
+</section>
+{% endblock %}

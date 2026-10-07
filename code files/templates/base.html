@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101612">
+  <title>{% block title %}FitBuddy{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="FitBuddy home">
+      <span class="brand-mark">F</span> fitbuddy
+    </a>
+    <nav>
+      <a href="/">Create a plan</a>
+      <a href="/view-all-users">Coach view</a>
+      <a href="/docs">API docs</a>
+    </nav>
+  </header>
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer>FitBuddy · Move at your pace. Rest is part of training.</footer>
+</body>
+</html>

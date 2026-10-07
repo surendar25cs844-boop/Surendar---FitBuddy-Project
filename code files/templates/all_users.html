@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Coach view · FitBuddy{% endblock %}
+{% block content %}
+<section class="admin-wrap">
+  <span class="step">FITBUDDY OVERVIEW</span>
+  <h1>Coach <em>view.</em></h1>
+  <p class="lede">Saved profiles and their current plan status.</p>
+
+  <div class="admin-warning">
+    Local development dashboard. Add authentication before exposing this page
+    to a network or real clients.
+  </div>
+
+  {% if users %}
+    <div class="user-list">
+      {% for user in users %}
+        <article class="user-card">
+          <div class="user-header">
+            <div>
+              <span class="step">USER ID · {{ user.user_key }}</span>
+              <h2>{{ user.name }}</h2>
+              <p>
+                {{ user.age }} years · {{ user.weight_kg }} kg ·
+                {{ user.goal.replace('_', ' ')|title }} ·
+                {{ user.intensity|title }}
+              </p>
+            </div>
+
+            <form
+              method="post"
+              action="/delete-user/{{ user.id }}"
+              onsubmit="return confirm('Delete this user and their saved plan?')"
+            >
+              <button class="delete-button" type="submit">Delete</button>
+            </form>
+          </div>
+
+          {% for plan in user.plans %}
+            <div class="plan-columns">
+              <div>
+                <h3>Original plan</h3>
+                <pre class="plan-text compact">{{ plan.original_plan }}</pre>
+              </div>
+
+              <div>
+                <h3>Current plan</h3>
+                <pre class="plan-text compact">{{ plan.current_plan }}</pre>
+              </div>
+            </div>
+
+            <div class="admin-tip">
+              <strong>Tip:</strong> {{ plan.nutrition_tip }}
+              {% if plan.latest_feedback %}
+                <br>
+                <strong>Last feedback:</strong> {{ plan.latest_feedback }}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <span class="spark">✳</span>
+      <h2>No plans yet</h2>
+      <p>New profiles will appear here after a plan is created.</p>
+      <a class="button inline-button" href="/">
+        Create the first plan ↗
+      </a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
